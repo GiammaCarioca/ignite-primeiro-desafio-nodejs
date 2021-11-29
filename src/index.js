@@ -29,7 +29,9 @@ app.post('/users', (request, response) => {
 
   const userAlreadyExists = users.find(user => user.username === username)
 
-  if (userAlreadyExists) return response.status(400).json({ error: 'Username already exists.' })
+  if (userAlreadyExists) {
+    return response.status(400).json({ error: 'Username already exists.' })
+  }
   
   const user = {
     id: uuidv4(),
@@ -63,7 +65,7 @@ app.post('/todos', checksExistsUserAccount, (request, response) => {
     created_at: new Date()
   }
 
-  user?.todos.push(todo)
+  user.todos.push(todo)
 
   return response.status(201).json(todo)
 });
@@ -73,7 +75,7 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
   const { title, deadline } = request.body
   const { id } = request.params
 
-  const todo = user?.todos.find(todo => todo.id === id)
+  const todo = user.todos.find(todo => todo.id === id)
 
   if (!todo) {
     return response.status(404).json({ error: 'Todo does not exist.' })
@@ -89,7 +91,7 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
   const { user } = request
   const { id } = request.params
 
-  const todo = user?.todos.find(todo => todo.id === id)
+  const todo = user.todos.find(todo => todo.id === id)
 
   if (!todo) {
     return response.status(404).json({ error: 'Todo does not exist.' })
@@ -104,7 +106,7 @@ app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
   const { user } = request
   const { id } = request.params
 
-  const todo = user?.todos.find(todo => todo.id === id)
+  const todo = user.todos.find(todo => todo.id === id)
 
   if (!todo) {
     return response.status(404).json({ error: 'Todo does not exist.' })
